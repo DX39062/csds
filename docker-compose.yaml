@@ -1,0 +1,38 @@
+services:
+  cache-server-1:
+    build: .
+    container_name: cache-server-1
+    # 将外部主机端口 9527 映射到容器内部统一的 8000 端口
+    ports:
+      - "9527:8000"
+    networks:
+      - sdcs-net
+    environment:
+      # 节点ID，用于服务发现和内部通信
+      - NODE_ID=cache-server-1:8000
+
+  cache-server-2:
+    build: .
+    container_name: cache-server-2
+    ports:
+      - "9528:8000"
+    networks:
+      - sdcs-net
+    environment:
+      - NODE_ID=cache-server-2:8000
+
+  cache-server-3:
+    build: .
+    container_name: cache-server-3
+    ports:
+      - "9529:8000"
+    networks:
+      - sdcs-net
+    environment:
+      - NODE_ID=cache-server-3:8000
+
+networks:
+  # 定义一个共享的桥接网络，让所有容器可以互相通信
+  sdcs-net:
+    driver: bridge
+
